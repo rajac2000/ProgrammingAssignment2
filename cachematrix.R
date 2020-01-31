@@ -18,7 +18,9 @@
 
 makeCacheMatrix <- function(x = matrix()) {
   #print(class(x))
-  cache_solved <<- x
+  cache_origin <<- x
+  cache_solved <<- solve(x)
+  print("Solve called for new Input")
 }
 
 ## The cacheSolve fumction can be called on terminal using a matrix as arg.
@@ -28,54 +30,20 @@ makeCacheMatrix <- function(x = matrix()) {
 ##
 ## Please see bottom for sample execution.
 
-cacheSolve <- function(x, ...) 
-{
-  if(exists("cache_origin") & exists("cache_solved"))
-  { 
-    #print("inside if 1")
-    if(!vect_same(cache_origin,x) | !exists("cache_solved"))
-    {
-      #print("inside if 2")
-      cache_origin <<- x
-      makeCacheMatrix(solve(x))
-      print("New input Solve called")
+cacheSolve <- function(x, ...){
+  if(exists("cache_origin") & exists("cache_solved")){ 
+    #if(!vect_same(cache_origin,x) | !exists("cache_solved")){
+    if(!identical(cache_origin,x) | !exists("cache_solved")){
+      makeCacheMatrix(x)
     }
   }
-  else
-  {
-    #print("inside else 1")
-    cache_origin <<- x
-    makeCacheMatrix(solve(x))
-    print("New input Solve called")
+  else{
+    makeCacheMatrix(x)
   }
   cache_solved
 }
 ## Return a matrix that is the inverse of 'x'
 
-
-### This function vect_same is to check if the two matrices are identical
-### It takes each matrix and convert them into vectors and a for loop is 
-### used to check if each of the elements match, 
-### Logical values returned as the result.
-
-vect_same <- function(a,b) {
-  vectsame = F
-  vecta <- as.vector(a)
-  vectb <- as.vector(b)
-  #print(vecta)
-  #print(vectb)
-  for(i in seq_along(vecta)){
-    #print(paste("iteration :", i))
-    if(vecta[i] == vectb[i]){
-       vectsame = T
-    } 
-    else {
-      vectsame = F
-      break()
-    }
-  }
-  vectsame
-}
 
 
 ### Sample Execution of the cacheSolve function.
